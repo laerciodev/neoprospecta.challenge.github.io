@@ -1,4 +1,13 @@
 table {
     width: 100%;
 }
-  
+
+.mat-app-background {
+    width: 80%;
+    margin: 40px auto;
+}
+
+.mat-header-cell,
+.mat-cell {
+    vertical-align: middle;
+}

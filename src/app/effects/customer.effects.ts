@@ -1,24 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY } from 'rxjs';
-import { map, mergeMap, catchError } from 'rxjs/operators';
+import { Actions, ofType, createEffect } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
+import { EMPTY, Observable } from 'rxjs';
+import { catchError, mergeMap, map } from 'rxjs/operators';
+import { getCustomers, loadCustomers } from '../actions/customer.action';
+import { Customer } from '../models/models';
 import { CustomerService } from '../services/customer.service';
 
 @Injectable()
-export class MovieEffects {
-
-  loadMovies$ = createEffect(() => this.actions$.pipe(
-    ofType('[Movies Page] Load Movies'),
-    mergeMap(() => this.moviesService.getAll()
-      .pipe(
-        map(movies => ({ type: '[Movies API] Movies Loaded Success', payload: movies })),
-        catchError(() => EMPTY)
-      ))
-    )
-  );
+export class CustomerEffects {
+   loadMovies$: Observable<Action> = createEffect(() => {
+       return this.actions$.pipe(
+           ofType(getCustomers),
+           mergeMap(
+               () => this.customerService.getAllCustomers().pipe(
+                   map((customers: Customer[]) => {
+                       return loadCustomers({ payload: customers });
+                   }),
+                   catchError(() => EMPTY)
+               )
+           )
+       );
+   });
 
   constructor(
     private actions$: Actions,
-    private moviesService: MoviesService
+    private customerService: CustomerService
   ) {}
 }

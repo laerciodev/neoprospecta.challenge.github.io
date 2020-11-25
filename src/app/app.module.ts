@@ -1,14 +1,19 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CustomerListComponent } from './customer-list/customer-list.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
 
-import { MaterialModule } from './material/material.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+
+import { MaterialModule } from './material/material.module';
+
+import { AppComponent } from './app.component';
+import { CustomerEffects } from '../app/effects/customer.effects';
+import { customersReducer } from '../app/reducers/customer.reducer';
+import { CustomerListComponent } from './customer-list/customer-list.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,9 +23,14 @@ import { EffectsModule } from '@ngrx/effects';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MaterialModule,
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([])
+    StoreModule.forRoot({
+      customers: customersReducer
+    }, {}),
+    EffectsModule.forRoot([
+      CustomerEffects
+    ])
   ],
   providers: [],
   bootstrap: [AppComponent]
