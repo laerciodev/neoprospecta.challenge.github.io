@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { Customer } from '../models/models';
@@ -18,6 +19,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Customer>;
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private store: Store<{ customers: Customer[] }>) {
     this.customers$ = store.select('customers');
@@ -25,6 +27,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       this.customers = customers;
       this.dataSource = new MatTableDataSource<Customer>(this.customers);
       this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     });
   }
 

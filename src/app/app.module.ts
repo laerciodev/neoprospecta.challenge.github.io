@@ -13,7 +13,8 @@ import { AppComponent } from './app.component';
 import { CustomerEffects } from '../app/effects/customer.effects';
 import { customersReducer } from '../app/reducers/customer.reducer';
 import { CustomerListComponent } from './customer-list/customer-list.component';
-
+import { CustomPaginator } from './custom-paginator/custom-paginator';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +33,9 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
       CustomerEffects
     ])
   ],
-  providers: [],
+  providers: [
+    { provide: MatPaginatorIntl, useClass: CustomPaginator }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
