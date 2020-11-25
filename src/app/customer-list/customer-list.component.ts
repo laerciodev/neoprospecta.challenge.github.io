@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Customer } from '../models/models';
 import { getCustomers } from '../actions/customer.action';
 @Component({
@@ -8,18 +10,38 @@ import { getCustomers } from '../actions/customer.action';
   styleUrls: ['customer-list.component.scss'],
   templateUrl: './customer-list.component.html',
 })
-export class CustomerListComponent implements OnInit {
-
+export class CustomerListComponent implements OnInit, OnDestroy {
+  displayedColumns: string[] = ['id', 'name', 'city', 'age', 'star'];
   customers$: Observable<Customer[]>;
+  customerSubs: Subscription;
+  customers: Customer[];
+  dataSource: MatTableDataSource<Customer>;
+
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private store: Store<{ customers: Customer[] }>) {
     this.customers$ = store.select('customers');
+    this.customerSubs = this.customers$.subscribe(customers => {
+      this.customers = customers;
+      this.dataSource = new MatTableDataSource<Customer>(this.customers);
+      this.dataSource.sort = this.sort;
+    });
   }
 
   ngOnInit(): void {
     this.store.dispatch(getCustomers());
   }
 
-  displayedColumns: string[] = ['id', 'name', 'city', 'age', 'star'];
+  ngOnDestroy(): void {
+    this.customerSubs.unsubscribe();
+  }
+
+  applyFilter(filterValue: string): void {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 }
 
