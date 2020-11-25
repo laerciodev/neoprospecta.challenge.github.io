@@ -15,7 +15,7 @@ lista);
 - [x] RF03: A listagem deve ser ordenável e filtrável por Id, nome, idade e cidade (front-side);
 
 - [x] RF04: A listagem deve possuir paginação a cada 10 clientes (front-side);
-- [] RF05: Deve haver um botão de “editar” cliente em cada linha da tabela;
+- [x] RF05: Deve haver um botão de “editar” cliente em cada linha da tabela;
 - [] RF06: Ao clicar no botão de “editar” o usuário deve ser redirecionado para uma outra rota com os dados do cliente em formato editável;
 - [] RF07: Deve ser adicionado na tela de edição um botão de “salvar” e um de “cancelar”;
 - [] RF08: Ao clicar no botão de “salvar” os dados atualizados do cliente devem ser enviados (PUT) para o seguinte endpoint (ele sempre retorna sucesso no PUT, mas não salva de verdade :)

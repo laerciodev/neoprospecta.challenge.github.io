@@ -12,7 +12,7 @@ import { getCustomers } from '../actions/customer.action';
   templateUrl: './customer-list.component.html',
 })
 export class CustomerListComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ['id', 'name', 'city', 'age', 'star'];
+  displayedColumns: string[] = ['id', 'name', 'city', 'age', 'button'];
   customers$: Observable<Customer[]>;
   customerSubs: Subscription;
   customers: Customer[];
