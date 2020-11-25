@@ -1,0 +1,30 @@
+<div class="mat-app-background basic-container">
+    <h3 class="title">Editar Cliente</h3>
+    <form class="form-container">
+        <mat-form-field>
+            <mat-label>Id:</mat-label>
+            <input matInput disabled [value]="(route.params | async)?.id">
+          </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Nome:</mat-label>
+          <input matInput placeholder="Qual o seu nome?" [value]="customer?.name">
+        </mat-form-field>
+      
+        <mat-form-field>
+          <mat-label>Cidade:</mat-label>
+          <input matInput placeholder="Qual a sua cidade?" [value]="customer?.city">
+        </mat-form-field>
+    
+        <mat-form-field>
+            <mat-label>Idade:</mat-label>
+            <input matInput placeholder="Qual a sua idade?" [value]="customer?.age">
+        </mat-form-field>
+
+        <div class="buttons-container">
+            <button class="button" (click)="save()" type="button" mat-raised-button color="primary">Salvar</button>
+            <button class="button" (click)="cancel()" type="button" mat-raised-button color="warn">Cancelar</button>
+        </div>
+    </form>
+</div>
+  

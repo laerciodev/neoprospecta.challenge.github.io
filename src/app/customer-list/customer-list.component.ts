@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { Customer } from '../models/models';
-import { getCustomers } from '../actions/customer.action';
+import { getCustomers } from '../store/customer.action';
 @Component({
   selector: 'app-customer-list',
   styleUrls: ['customer-list.component.scss'],
@@ -21,7 +22,10 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private store: Store<{ customers: Customer[] }>) {
+  constructor(
+    private store: Store<{ customers: Customer[] }>,
+    private router: Router
+  ) {
     this.customers$ = store.select('customers');
     this.customerSubs = this.customers$.subscribe(customers => {
       this.customers = customers;
@@ -45,6 +49,10 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  editCustomer(id: string): void {
+    this.router.navigateByUrl(`edit/${id}`);
   }
 }
 

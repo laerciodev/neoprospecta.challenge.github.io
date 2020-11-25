@@ -3,7 +3,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, mergeMap, map } from 'rxjs/operators';
-import { getCustomers, loadCustomers } from '../actions/customer.action';
+import { getCustomers, loadCustomers } from './customer.action';
 import { Customer } from '../models/models';
 import { CustomerService } from '../services/customer.service';
 

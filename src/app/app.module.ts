@@ -10,15 +10,19 @@ import { EffectsModule } from '@ngrx/effects';
 import { MaterialModule } from './material/material.module';
 
 import { AppComponent } from './app.component';
-import { CustomerEffects } from '../app/effects/customer.effects';
-import { customersReducer } from '../app/reducers/customer.reducer';
+import { CustomerEffects } from './store/customer.effects';
+import { customersReducer } from './store/customer.reducer';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import { CustomPaginator } from './custom-paginator/custom-paginator';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { CustomerEditComponent } from './customer-edit/customer-edit.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 @NgModule({
   declarations: [
     AppComponent,
-    CustomerListComponent
+    CustomerListComponent,
+    CustomerEditComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +35,8 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
     }, {}),
     EffectsModule.forRoot([
       CustomerEffects
-    ])
+    ]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomPaginator }
