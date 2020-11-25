@@ -20,6 +20,6 @@ export class CustomerListComponent implements OnInit {
     this.store.dispatch(getCustomers());
   }
 
-  displayedColumns: string[] = ['id', 'name', 'city', 'age'];
+  displayedColumns: string[] = ['id', 'name', 'city', 'age', 'star'];
 }
 
