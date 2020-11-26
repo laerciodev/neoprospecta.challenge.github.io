@@ -1,6 +1,6 @@
 <div class="mat-app-background basic-container">
     <h3 class="title">Editar Cliente</h3>
-    <form class="form-container">
+    <form [formGroup]="form" class="form-container">
         <mat-form-field>
             <mat-label>Id:</mat-label>
             <input matInput disabled [value]="(route.params | async)?.id">

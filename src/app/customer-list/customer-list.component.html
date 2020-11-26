@@ -1,7 +1,13 @@
 <div class="mat-app-background basic-container">
-  <mat-form-field>
-    <input (keyup)="applyFilter($event.target.value)" matInput placeholder="Filtro">
-  </mat-form-field>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <input formControlName="searchTerm" matInput placeholder="Filtro">
+    </mat-form-field>
+    <mat-radio-group formControlName="options" class="radio-button-container" aria-label="Selecione uma opção">
+      <mat-label class="label-filter-by">Filtrar por:</mat-label>
+      <mat-radio-button *ngFor="let filter of filters" color="primary" [value]="filter">{{ filter }}</mat-radio-button>
+    </mat-radio-group>
+  </form>
 
   <div class="example-container mat-elevation-z8">
     <div class="example-table-container">

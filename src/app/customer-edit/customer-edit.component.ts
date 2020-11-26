@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { take, pluck, takeWhile, map } from 'rxjs/operators';
 import { CustomerService } from '../services/customer.service';
@@ -17,6 +18,7 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
 
   idCustomer: number;
   customer: Customer;
+  form: FormGroup;
   storeSubs: Subscription;
 
   constructor(
@@ -24,6 +26,7 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     private customerService: CustomerService,
     private snackBar: MatSnackBar,
+    private fb: FormBuilder,
     private store: Store<{ customers: Customer[] }>,
   ) {}
 
@@ -44,8 +47,13 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
               this.store.dispatch(getCustomers());
             }
           }
-      ) ;
+      );
     });
+    this.initForm();
+  }
+
+  initForm(): void {
+    this.form = this.fb.group({});
   }
 
   ngOnDestroy(): void {
