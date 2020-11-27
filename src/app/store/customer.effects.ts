@@ -4,7 +4,7 @@ import { Action } from '@ngrx/store';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, mergeMap, map } from 'rxjs/operators';
 import { getCustomers, loadCustomers } from './customer.action';
-import { Customer } from '../models/models';
+import { Customer } from '../models';
 import { CustomerService } from '../services/customer.service';
 
 @Injectable()

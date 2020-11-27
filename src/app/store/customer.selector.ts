@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { AppState } from '../models/models';
+import { AppState } from '../models';
 
 export const selectAllCustomers = (state: AppState) => state.customers;
 

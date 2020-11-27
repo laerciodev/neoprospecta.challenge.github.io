@@ -18,11 +18,15 @@
     
         <mat-form-field>
             <mat-label>Idade:</mat-label>
-            <input matInput placeholder="Qual a sua idade?" [value]="customer?.age">
+            <input matInput formControlName="age" placeholder="Qual a sua idade?" [value]="customer?.age">
         </mat-form-field>
+        <ng-container *ngIf="ageControl?.touched || ageControl?.dirty">
+          <mat-error *ngIf="ageControl?.errors?.required">*Idade dever ter pelo menos 1 número.</mat-error>
+          <mat-error *ngIf="ageControl?.errors?.maxlength">*Idade não pode ter mais que 3 números.</mat-error>
+        </ng-container>
 
         <div class="buttons-container">
-            <button class="button" (click)="save()" type="button" mat-raised-button color="primary">Salvar</button>
+            <button class="button" [disabled]="form.invalid" (click)="save()" type="button" mat-raised-button color="primary">Salvar</button>
             <button class="button" (click)="cancel()" type="button" mat-raised-button color="warn">Cancelar</button>
         </div>
     </form>

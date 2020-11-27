@@ -1,17 +1,17 @@
 <div class="mat-app-background basic-container">
   <form [formGroup]="form">
     <mat-form-field>
-      <input formControlName="searchTerm" matInput placeholder="Filtro">
+      <input id="form-search" formControlName="searchTerm" matInput placeholder="Filtro">
     </mat-form-field>
     <mat-radio-group formControlName="options" class="radio-button-container" aria-label="Selecione uma opção">
       <mat-label class="label-filter-by">Filtrar por:</mat-label>
-      <mat-radio-button *ngFor="let filter of filters" color="primary" [value]="filter">{{ filter }}</mat-radio-button>
+      <mat-radio-button *ngFor="let filter of filters" color="primary" [value]="filter.value">{{ filter.label }}</mat-radio-button>
     </mat-radio-group>
   </form>
 
   <div class="example-container mat-elevation-z8">
     <div class="example-table-container">
-      <table mat-table [dataSource]="dataSource" matSort>
+      <table id="table" mat-table [dataSource]="dataSource" matSort>
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
       
@@ -42,7 +42,7 @@
         </ng-container>
 
         <!-- Button Column -->
-        <ng-container matColumnDef="button">
+        <ng-container matColumnDef="edit">
           <th mat-header-cell *matHeaderCellDef> </th>
           <td mat-cell *matCellDef="let element"> 
             <button type="button" (click)="editCustomer(element.id)" mat-raised-button color="primary">Editar</button>

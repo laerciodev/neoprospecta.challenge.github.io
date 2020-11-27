@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Customer } from '../models/models';
+import { Customer } from '../models';
 import { Observable } from 'rxjs';
 
 const GET_URL = 'http://private-92a969-processoseletivo1.apiary-mock.com/customers';

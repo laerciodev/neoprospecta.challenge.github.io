@@ -17,6 +17,15 @@
     max-width: 500px;
 }
 
+.mat-error {
+    width: 100%;
+    margin-bottom: 20px;
+
+    @media(min-width: 768px) {
+        text-align: center;
+    }
+}
+
 .buttons-container {
     display: flex;
     justify-content: center;
@@ -25,3 +34,4 @@
 .button:first-child {
     margin-right: 10px;
 }
+

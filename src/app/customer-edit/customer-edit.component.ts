@@ -1,20 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, AbstractControl, Validators } from '@angular/forms';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { Subscription } from 'rxjs';
 import { take, pluck, takeWhile, map } from 'rxjs/operators';
 import { CustomerService } from '../services/customer.service';
-import { Customer } from '../models/models';
+import { Customer } from '../models';
 import { getCustomers } from '../store/customer.action';
 import { getCustomerById } from '../store/customer.selector';
+@UntilDestroy()
 @Component({
   selector: 'app-customer-edit',
   templateUrl: './customer-edit.component.html',
   styleUrls: ['./customer-edit.component.scss']
 })
-export class CustomerEditComponent implements OnInit, OnDestroy {
+export class CustomerEditComponent implements OnInit {
 
   idCustomer: number;
   customer: Customer;
@@ -38,7 +40,8 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
     ).subscribe(
       id => {
         this.idCustomer = id;
-        this.storeSubs = this.store.select(getCustomerById(this.idCustomer))
+        this.store.select(getCustomerById(this.idCustomer))
+          .pipe(untilDestroyed(this))
           .subscribe(
           (customer: Customer) => {
             if (customer) {
@@ -53,11 +56,9 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
   }
 
   initForm(): void {
-    this.form = this.fb.group({});
-  }
-
-  ngOnDestroy(): void {
-    this.storeSubs.unsubscribe();
+    this.form = this.fb.group({
+      age: [this.customer.age, [Validators.required, Validators.maxLength(3)]]
+    });
   }
 
   openSnackBar(message: string, action: string): void {
@@ -83,4 +84,7 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
     this.router.navigate(['']);
   }
 
+  get ageControl(): AbstractControl {
+    return this.form.get('age');
+  }
 }

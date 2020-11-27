@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { Store } from '@ngrx/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, Subscription } from 'rxjs';
-import { Customer } from '../models/models';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Customer } from '../models';
 import { getCustomers } from '../store/customer.action';
 @UntilDestroy()
 @Component({
@@ -16,14 +17,19 @@ import { getCustomers } from '../store/customer.action';
   templateUrl: './customer-list.component.html',
 })
 export class CustomerListComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'city', 'age', 'button'];
-  filters = this.displayedColumns.slice(0, -1);
+  filters = [
+    { label: 'id', value: 'id' },
+    { label: 'nome', value: 'name' },
+    { label: 'cidade', value: 'city' },
+    { label: 'idade', value: 'age' },
+  ];
+  displayedColumns: string[];
   customers$: Observable<Customer[]>;
   customerSubs: Subscription;
   customers: Customer[];
   dataSource: MatTableDataSource<Customer>;
   form: FormGroup;
-  filterCategory: string;
+  filterCategory = 'id';
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -47,6 +53,12 @@ export class CustomerListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.displayedColumns = this.filters.map(category => {
+      if (typeof category.value === 'string') {
+        return category.value;
+      }
+    });
+    this.displayedColumns.push('edit');
     this.store.dispatch(getCustomers());
     this.initForm();
   }
@@ -56,13 +68,17 @@ export class CustomerListComponent implements OnInit {
       options: ['id'],
       searchTerm: ['']
     });
-    this.form.get('options').valueChanges
+    this.formOptions.valueChanges
       .pipe(untilDestroyed(this))
       .subscribe(
         option => this.filterCategory = option
     );
-    this.form.get('searchTerm').valueChanges
-      .pipe(untilDestroyed(this))
+    this.formSearchTerm.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        debounceTime(400),
+        distinctUntilChanged()
+      )
       .subscribe(
         searchTerm => this.applyFilter(searchTerm)
     );
@@ -77,6 +93,14 @@ export class CustomerListComponent implements OnInit {
 
   editCustomer(id: string): void {
     this.router.navigateByUrl(`edit/${id}`);
+  }
+
+  get formOptions(): AbstractControl {
+    return this.form.get('options');
+  }
+
+  get formSearchTerm(): AbstractControl {
+    return this.form.get('searchTerm');
   }
 }
 

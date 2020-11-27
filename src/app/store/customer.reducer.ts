@@ -1,6 +1,6 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import { getCustomers, loadCustomers } from './customer.action';
-import { Customer } from '../models/models';
+import { Customer } from '../models';
 
 export const initialState: Customer[] = [];
 
